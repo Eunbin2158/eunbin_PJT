@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>호기심 많은 은빈의 방</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 아기자기하고 둥글둥글한 느낌의 Jua 폰트와 감성적인 손글씨 느낌의 Gamja Flower 폰트 추가 -->
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Jua&display=swap" rel="stylesheet">
+    <!-- Three.js & OrbitControls 라이브러리 로드 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- 3D 캔버스 영역 -->
+    
+
+    <div class="bgm-player" id="bgmToggle">
+        🎵 <span id="bgmText">BGM OFF</span>
+        <div class="music-notes">
+            <span class="note">♪</span>
+            <span class="note">♫</span>
+            <span class="note">♪</span>
+        </div>
+    </div>
+
+    <!-- 우측 다이어리 인덱스 탭 -->
+    <nav class="index-tabs">
+        <div class="tab" id="tab-home" onclick="switchPage('home')">Home</div>
+        <div class="tab tab-pink active" id="tab-aboutme" onclick="switchPage('aboutme')">About Me</div>
+        <div class="tab tab-blue" id="tab-portfolio" onclick="switchPage('portfolio')">Portfolio</div>
+        <div class="tab tab-yellow" onclick="showModal('Miniature', '아기자기한 미니어처 세상!\n장르를 불문하고 내 손으로 직접 결과물을 뚝딱뚝딱 만들어내는 과정을 진심으로 사랑해요.')">Miniature</div>
+        <div class="tab" id="tab-english" onclick="switchPage('english')">English</div>
+    </nav>
+
+    <!-- 상단 고정 걸이식 간판 -->
+    
+
+    <div id="about-me-page" class="active">
+        <div class="diary-notebook">
+            
+            <!-- 왼쪽 파트: 인트로 & 프로필 폴라로이드 (삐약이 콘셉트) -->
+            <div class="w-full md:w-[35%] flex flex-col items-center gap-6 z-10">
+                <div class="text-center">
+                    <span class="bg-yellow-100 text-yellow-700 text-xs px-3 py-1 rounded-full border border-yellow-200">#ABOUT_PEEYAK</span>
+                    <h2 class="text-3xl text-gray-700 mt-2">반가워요!</h2>
+                    <p class="text-sm text-gray-500 mt-1 font-semibold">만드는 매력에 푹 빠진 은빈입니다.</p>
+                </div>
+
+                <!-- 2D 폴라로이드 사진 (CSS로 구현된 병아리 삐약이 일러스트형 카드) -->
+                <div class="polaroid-frame flex flex-col items-center" onclick="showModal('삐약이 (Peeyak)', '이름: 은빈 (별명: 삐약이)\nMBTI: ENTP\n좋아하는 것: 따뜻한 픽셀 조립하기, 아기자기한 미니어처 빚기, 더 넓은 미지의 우주 모험하기! 🐥\n특징: 호기심이 생기면 일단 부리로 콕콕 찔러보고 직접 경험해 봐야 직성이 풀립니다!')">
+                    <div class="w-[180px] h-[180px] bg-sky-100 rounded-lg flex items-center justify-center relative overflow-hidden border border-sky-200">
+                        <!-- 귀여운 병아리 삐약이 일러스트 (CSS) -->
+                        <div class="w-[110px] h-[120px] bg-yellow-300 rounded-t-[50px] rounded-b-[45px] shadow-sm relative mt-8 flex flex-col items-center">
+                            <!-- 머리 위의 귀여운 주황 새싹 벼슬 -->
+                            <div class="absolute -top-3 w-4 h-6 bg-orange-400 rounded-full rotate-12"></div>
+                            <div class="absolute -top-2 w-3 h-5 bg-orange-400 rounded-full -rotate-12"></div>
+                            
+                            <!-- 눈 -->
+                            <div class="flex gap-7 mt-8">
+                                <div class="w-3.5 h-3.5 bg-gray-700 rounded-full"></div>
+                                <div class="w-3.5 h-3.5 bg-gray-700 rounded-full"></div>
+                            </div>
+                            
+                            <!-- 발그레 볼터치 -->
+                            <div class="absolute top-[48px] left-3 w-5 h-2.5 bg-rose-400 rounded-full opacity-60"></div>
+                            <div class="absolute top-[48px] right-3 w-5 h-2.5 bg-rose-400 rounded-full opacity-60"></div>
+                            
+                            <!-- 귀여운 주황 부리 -->
+                            <div class="w-5 h-4 bg-orange-400 rounded-b-full border-t border-orange-500 shadow-sm mt-1 z-10"></div>
+                            
+                            <!-- 조그만 병아리 날개 -->
+                            <div class="absolute left-[-10px] top-[50px] w-4 h-8 bg-yellow-400 rounded-l-full rotate-12"></div>
+                            <div class="absolute right-[-10px] top-[50px] w-4 h-8 bg-yellow-400 rounded-r-full -rotate-12"></div>
+                        </div>
+                    </div>
+                    <span class="handwritten-font mt-4 text-[#555] font-bold">Peeyak in My Room 🐥</span>
+                </div>
+
+                <div class="text-center w-full max-w-[250px] p-4 bg-white rounded-2xl border border-gray-100 shadow-sm mt-2">
+                    <p class="text-xs text-gray-400 font-bold mb-1">CATCHPHRASE</p>
+                    <p class="text-sm text-gray-600 font-semibold italic">"픽셀과 미니어처로 지은 나의 세계"</p>
+                </div>
+            </div>
+
+            <!-- 오른쪽 파트: 핵심 가치 메모장 스크랩북 (3대 매력 포인트 상세 소개) -->
+            <div class="w-full md:w-[65%] flex flex-col gap-6 overflow-y-auto pr-2 z-10">
+                <h3 class="text-2xl text-gray-700 border-b border-gray-200 pb-2 flex items-center gap-2">
+                    ✨ <span>나를 이루는 호기심 조각들</span>
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- 매력 포인트 1 -->
+                    <div class="scrap-sticker bg-amber-50 border border-amber-200" onclick="showModal('만드는 즐거움을 아는 크리에이터', '소프트웨어 프로그래밍부터 아기자기한 미니어처까지, 장르를 불문하고 내 손으로 직접 결과물을 뚝딱뚝딱 만들어내는 과정을 진심으로 사랑합니다.\n\n가상 세계의 한 줄 코드와 물리 세계의 미니어처 조각 모두 저에겐 같은 설렘을 줍니다.')">
+                        <div class="masking-tape" style="background-color: rgba(254, 243, 199, 0.8);"></div>
+                        <div class="flex items-center gap-2 mb-2 mt-2">
+                            <span class="text-2xl">🛠️</span>
+                            <h4 class="text-lg font-bold text-amber-900">만드는 즐거움</h4>
+                        </div>
+                        <p class="text-sm text-amber-800 leading-relaxed font-semibold">
+                            소프트웨어 코딩부터 미니어처 조각 조립까지 무언가를 직접 빌딩하고 뚝딱 완성해 내는 순간을 진심으로 애정해요.
+                        </p>
+                    </div>
+
+                    <!-- 매력 포인트 2 -->
+                    <div class="scrap-sticker bg-teal-50 border border-teal-200" onclick="showModal('무한한 호기심', '궁금한 건 무조건 해봐야 직성이 풀리는 성격이에요!\n새로운 언어, 처음 다루는 개발 도구, 낯선 환경에서도 주저하지 않고 다이빙하여 저만의 흥미로운 세상과 스펙트럼을 기분 좋게 넓혀나갑니다.')">
+                        <div class="masking-tape" style="background-color: rgba(204, 251, 241, 0.8);"></div>
+                        <div class="flex items-center gap-2 mb-2 mt-2">
+                            <span class="text-2xl">💡</span>
+                            <h4 class="text-lg font-bold text-teal-900">무한한 호기심</h4>
+                        </div>
+                        <p class="text-sm text-teal-800 leading-relaxed font-semibold">
+                            "궁금한 건 꼭 해봐야 직성이 풀려요!" 머릿속 상상을 시도로 옮기고, 다채로운 스펙트럼을 지닌 나를 만드는 일에 주저하지 않아요.
+                        </p>
+                    </div>
+
+                    <!-- 매력 포인트 3 -->
+                    <div class="scrap-sticker bg-blue-50 border border-blue-200 md:col-span-2" onclick="showModal('재미와 성장 중심 실행력', '재미있어 보이는 일은 망설임 없이 도전하고 주도적으로 깊이 파고듭니다.\n\n움직이는 귀여운 캐릭터 중심의 웹 기획부터 매일 한 걸음씩 기록하는 꾸준한 영어 학습 다이어리까지, 끊임없이 지속 가능한 내재적 흥미를 동력 삼아 성장하고 있습니다.')">
+                        <div class="masking-tape" style="background-color: rgba(219, 234, 254, 0.8);"></div>
+                        <div class="flex items-center gap-2 mb-2 mt-2">
+                            <span class="text-2xl">🚀</span>
+                            <h4 class="text-lg font-bold text-blue-900">재미 기반의 실행력</h4>
+                        </div>
+                        <p class="text-sm text-blue-800 leading-relaxed font-semibold">
+                            재미는 최고의 원동력입니다! 아장아장 움직이는 귀여운 캐릭터 기획부터 매일 아침 거르지 않는 꾸준한 영어 탐방 다이어리 기록까지, 망설임 없이 먼저 실행하고 즐겁게 파고들어 나를 확장합니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 손글씨 데코레이션 텍스트 -->
+                <div class="mt-4 p-4 border-l-4 border-emerald-400 bg-white rounded-r-2xl shadow-sm">
+                    <p class="handwritten-font text-emerald-800">
+                        "틀에 얽매이기보단 나를 가장 나답게 보여주고 싶어요. 제 가상 명함에 있는 작은 소품들을 구석구석 살피듯, 언제든 문을 두드려 주세요!" - 은빈 드림
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 영어 공부 기록 페이지 (Habit Tracker) -->
+    
+
+    <!-- 조작 팁 표시 -->
+    
+
+    <!-- 모달 창 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">×</span>
+            <h2 class="modal-title" id="modalTitle">제목</h2>
+            <p class="modal-text" id="modalText">내용이 들어갑니다.</p>
+        </div>
+    </div>
+
+
+
+
+    <script src="assets/js/main.js"></script>
+
+</body>
+</html>

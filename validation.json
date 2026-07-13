@@ -1,0 +1,77 @@
+{
+  "css_exact": true,
+  "named_functions_exact": true,
+  "missing_function_names": [],
+  "missing_declared_variable_names": [],
+  "js_unchanged_outside_intentional_parts": true,
+  "window_onload_removed": true,
+  "main_js_syntax_ok": true,
+  "index.html": {
+    "paths_ok": true,
+    "css_link_ok": true,
+    "main_js_link_ok": true,
+    "present_ids_ok": true,
+    "absent_ids_ok": true,
+    "common_layout_ok": true,
+    "active_tab_ok": true,
+    "only_one_active_main_tab": true,
+    "init_calls_ok": true,
+    "no_render_stamps_init": true,
+    "bgm_markup_preserved": true,
+    "modal_markup_preserved": true,
+    "canvas-container_content_preserved": true,
+    "signboard_content_preserved": true,
+    "hint-tooltip_content_preserved": true
+  },
+  "about.html": {
+    "paths_ok": true,
+    "css_link_ok": true,
+    "main_js_link_ok": true,
+    "present_ids_ok": true,
+    "absent_ids_ok": true,
+    "common_layout_ok": true,
+    "active_tab_ok": true,
+    "only_one_active_main_tab": true,
+    "init_calls_ok": true,
+    "no_page_init_call": true,
+    "bgm_markup_preserved": true,
+    "modal_markup_preserved": true,
+    "about-me-page_content_preserved": true
+  },
+  "english.html": {
+    "paths_ok": true,
+    "css_link_ok": true,
+    "main_js_link_ok": true,
+    "present_ids_ok": true,
+    "absent_ids_ok": true,
+    "common_layout_ok": true,
+    "active_tab_ok": true,
+    "only_one_active_main_tab": true,
+    "init_calls_ok": true,
+    "no_three_init_call": true,
+    "bgm_markup_preserved": true,
+    "modal_markup_preserved": true,
+    "english-page_content_preserved": true
+  },
+  "inline_handlers": {
+    "referenced": [
+      "closeModal",
+      "resetStamps",
+      "showModal",
+      "switchPage"
+    ],
+    "missing_from_main_js": []
+  },
+  "all_boolean_checks_passed": true,
+  "runtime_test": {
+    "no_auto_animation": true,
+    "stamps_31": true,
+    "stamp_saved": true,
+    "progress_updated": true,
+    "modal_open_close": true,
+    "mpa_navigation": true,
+    "bgm_listener_registered": true,
+    "modal_listener_registered": true
+  },
+  "all_checks_passed": true
+}

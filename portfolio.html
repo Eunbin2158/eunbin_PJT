@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | 호기심 많은 은빈의 방</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Jua&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="bgm-player" id="bgmToggle">
+        🎵 <span id="bgmText">BGM OFF</span>
+        <div class="music-notes">
+            <span class="note">♪</span>
+            <span class="note">♫</span>
+            <span class="note">♪</span>
+        </div>
+    </div>
+
+    <nav class="index-tabs">
+        <div class="tab" id="tab-home" onclick="switchPage('home')">Home</div>
+        <div class="tab tab-pink" id="tab-aboutme" onclick="switchPage('aboutme')">About Me</div>
+        <div class="tab tab-blue active" id="tab-portfolio" onclick="switchPage('portfolio')">Portfolio</div>
+        <div class="tab tab-yellow" onclick="showModal('Miniature', '아기자기한 미니어처 세상!\n장르를 불문하고 내 손으로 직접 결과물을 뚝딱뚝딱 만들어내는 과정을 진심으로 사랑해요.')">Miniature</div>
+        <div class="tab" id="tab-english" onclick="switchPage('english')">English</div>
+    </nav>
+
+    <main id="portfolio-page" class="active">
+        <section class="portfolio-notebook">
+            <header class="portfolio-header">
+                <div>
+                    <span class="portfolio-label">#MY_PROJECTS</span>
+                    <h1>호기심을 결과물로 만든 기록 ✨</h1>
+                    <p>새로운 기술을 직접 연결하고, 실제로 동작하는 서비스로 완성했어요.</p>
+                </div>
+                <span class="portfolio-doodle" aria-hidden="true">🐥</span>
+            </header>
+
+            <div class="portfolio-grid">
+                <article class="project-card project-mint" onclick="showModal('METAFUSE', '메타인지 검사와 감정 기록을 바탕으로 맞춤형 응원을 제공하는 AI 서비스입니다.\n\n사용자 기록과 감정 분석 결과가 AI 응답에 반영되도록 서비스 구조를 설계했습니다.')">
+                    <div class="project-tape"></div>
+                    <div class="project-image-wrap project-image-light">
+                        <img src="assets/images/metafuse.png" alt="METAFUSE 애플리케이션 화면" class="project-image project-image-contain">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-title-row">
+                            <span class="project-number">01</span>
+                            <h2>METAFUSE</h2>
+                        </div>
+                        <p class="project-summary">메타인지 검사와 감정 기록을 활용한 AI 응원 서비스</p>
+                        <div class="project-role">
+                            <span>내가 한 것</span>
+                            <p>감정 분석 결과와 사용자 기록을 AI 응답에 연결하는 구조 설계</p>
+                        </div>
+                        <div class="project-tags">
+                            <span>AI</span><span>Spring Boot</span><span>React Native</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card project-lavender" onclick="showModal('냥냥편지', '스마트폰 로그에서 이상 신호를 감지하고 보호자에게 빠르게 알리는 서비스입니다.\n\nFastAPI와 AWS를 활용해 알림 처리 흐름과 안정적인 메시지 전송 구조를 구현했습니다.')">
+                    <div class="project-tape"></div>
+                    <div class="project-image-wrap">
+                        <img src="assets/images/nyangnyang-letter.jpg" alt="냥냥편지 서비스 소개 화면" class="project-image project-image-cover">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-title-row">
+                            <span class="project-number">02</span>
+                            <h2>냥냥편지</h2>
+                        </div>
+                        <p class="project-summary">스마트폰 이상 신호를 감지해 보호자에게 알리는 서비스</p>
+                        <div class="project-role">
+                            <span>내가 한 것</span>
+                            <p>FastAPI·AWS 기반 알림 흐름과 안정적인 메시지 전송 구조 구현</p>
+                        </div>
+                        <div class="project-tags">
+                            <span>FastAPI</span><span>AWS</span><span>FCM</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card project-pink" onclick="showModal('밝혀줘! 내 X-mas 전구', '친구들이 남긴 메시지를 크리스마스에 공개하는 전구형 롤링페이퍼입니다.\n\n웹 서비스 개발과 배포를 담당하고, 실제 사용자 피드백을 반영해 기능을 개선했습니다.')">
+                    <div class="project-tape"></div>
+                    <div class="project-image-wrap project-image-light">
+                        <img src="assets/images/xmas-bulb.png" alt="밝혀줘 내 크리스마스 전구 서비스 화면" class="project-image project-image-contain">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-title-row">
+                            <span class="project-number">03</span>
+                            <h2>밝혀줘! 내 X-mas 전구</h2>
+                        </div>
+                        <p class="project-summary">크리스마스에 공개되는 전구형 온라인 롤링페이퍼</p>
+                        <div class="project-role">
+                            <span>내가 한 것</span>
+                            <p>React·FastAPI 기반 웹 개발, 배포 및 사용자 피드백 반영</p>
+                        </div>
+                        <div class="project-tags">
+                            <span>React</span><span>FastAPI</span><span>Deploy</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <p class="portfolio-note handwritten-font">“궁금한 것은 직접 만들어 보며 제 세계를 넓혀갑니다.”</p>
+        </section>
+    </main>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">×</span>
+            <h2 class="modal-title" id="modalTitle">제목</h2>
+            <p class="modal-text" id="modalText">내용이 들어갑니다.</p>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

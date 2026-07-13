@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>호기심 많은 은빈의 방</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 아기자기하고 둥글둥글한 느낌의 Jua 폰트와 감성적인 손글씨 느낌의 Gamja Flower 폰트 추가 -->
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Jua&display=swap" rel="stylesheet">
+    <!-- Three.js & OrbitControls 라이브러리 로드 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- 3D 캔버스 영역 -->
+    <div id="canvas-container"></div>
+
+    <div class="bgm-player" id="bgmToggle">
+        🎵 <span id="bgmText">BGM OFF</span>
+        <div class="music-notes">
+            <span class="note">♪</span>
+            <span class="note">♫</span>
+            <span class="note">♪</span>
+        </div>
+    </div>
+
+    <!-- 우측 다이어리 인덱스 탭 -->
+    <nav class="index-tabs">
+        <div class="tab active" id="tab-home" onclick="switchPage('home')">Home</div>
+        <div class="tab tab-pink" id="tab-aboutme" onclick="switchPage('aboutme')">About Me</div>
+        <div class="tab tab-blue" id="tab-portfolio" onclick="switchPage('portfolio')">Portfolio</div>
+        <div class="tab tab-yellow" onclick="showModal('Miniature', '아기자기한 미니어처 세상!\n장르를 불문하고 내 손으로 직접 결과물을 뚝딱뚝딱 만들어내는 과정을 진심으로 사랑해요.')">Miniature</div>
+        <div class="tab" id="tab-english" onclick="switchPage('english')">English</div>
+    </nav>
+
+    <!-- 상단 고정 걸이식 간판 -->
+    <div class="signboard-container" id="signboard">
+        <div class="signboard-wrapper">
+            <div class="sign-ropes">
+                <div class="rope"></div>
+                <div class="rope"></div>
+            </div>
+            <div class="frame" onclick="showModal('Welcome!', '나를 처음 만나는 모든 사람에게,\n틀에 얽매이지 않고 나를 자연스럽게 보여주는\n디지털 명함에 오신 것을 환영합니다!')">
+                <h1>호기심 많은 은빈의 방</h1>
+                <p>픽셀과 미니어처로 지은 나의 세계</p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- 영어 공부 기록 페이지 (Habit Tracker) -->
+    
+
+    <!-- 조작 팁 표시 -->
+    <div class="interaction-hint" id="hint-tooltip">
+        🖱️ <span>바닥이나 가구를 클릭해 캐릭터를 이동시키고 3D 화면을 드래그해보세요!</span>
+    </div>
+
+    <!-- 모달 창 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">×</span>
+            <h2 class="modal-title" id="modalTitle">제목</h2>
+            <p class="modal-text" id="modalText">내용이 들어갑니다.</p>
+        </div>
+    </div>
+
+
+
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        init3D();
+        animate();
+    </script>
+
+</body>
+</html>

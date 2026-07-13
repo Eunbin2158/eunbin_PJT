@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>호기심 많은 은빈의 방</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 아기자기하고 둥글둥글한 느낌의 Jua 폰트와 감성적인 손글씨 느낌의 Gamja Flower 폰트 추가 -->
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Jua&display=swap" rel="stylesheet">
+    <!-- Three.js & OrbitControls 라이브러리 로드 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- 3D 캔버스 영역 -->
+    
+
+    <div class="bgm-player" id="bgmToggle">
+        🎵 <span id="bgmText">BGM OFF</span>
+        <div class="music-notes">
+            <span class="note">♪</span>
+            <span class="note">♫</span>
+            <span class="note">♪</span>
+        </div>
+    </div>
+
+    <!-- 우측 다이어리 인덱스 탭 -->
+    <nav class="index-tabs">
+        <div class="tab" id="tab-home" onclick="switchPage('home')">Home</div>
+        <div class="tab tab-pink" id="tab-aboutme" onclick="switchPage('aboutme')">About Me</div>
+        <div class="tab tab-blue" id="tab-portfolio" onclick="switchPage('portfolio')">Portfolio</div>
+        <div class="tab tab-yellow" onclick="showModal('Miniature', '아기자기한 미니어처 세상!\n장르를 불문하고 내 손으로 직접 결과물을 뚝딱뚝딱 만들어내는 과정을 진심으로 사랑해요.')">Miniature</div>
+        <div class="tab active" id="tab-english" onclick="switchPage('english')">English</div>
+    </nav>
+
+    <!-- 상단 고정 걸이식 간판 -->
+    
+
+    
+
+    <!-- 영어 공부 기록 페이지 (Habit Tracker) -->
+    <div id="english-page" class="active">
+        <div class="diary-notebook">
+            
+            <!-- 왼쪽 파트: 습관 요약 및 원형 진척도 표시 -->
+            <div class="w-full md:w-[40%] flex flex-col items-center gap-6 z-10">
+                <div class="text-center">
+                    <span class="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full border border-blue-200">#ENGLISH_HABIT</span>
+                    <h2 class="text-3xl text-gray-700 mt-2">영어 정복기 📚</h2>
+                    <p class="text-sm text-gray-500 mt-1 font-semibold">한눈에 보는 한 달 스탬프</p>
+                </div>
+
+                <!-- 원형 프로그레스 트래커 -->
+                <div class="flex flex-col items-center justify-center p-6 bg-white rounded-3xl border border-gray-100 shadow-sm w-full max-w-[280px]">
+                    <div class="relative w-36 h-36 flex items-center justify-center">
+                        <svg class="w-full h-full transform -rotate-90">
+                            <circle cx="72" cy="72" r="58" stroke="#f3f4f6" stroke-width="12" fill="transparent" />
+                            <circle id="progress-ring" cx="72" cy="72" r="58" stroke="#a1c4fd" stroke-width="12" fill="transparent" stroke-dasharray="364.42" stroke-dashoffset="364.42" stroke-linecap="round" class="transition-all duration-500" />
+                        </svg>
+                        <span id="progress-percent" class="absolute text-3xl font-bold text-gray-700">0%</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-5 font-semibold text-center leading-relaxed" id="progress-message">달력에 스탬프를 찍어봐요! 🐥</p>
+                </div>
+
+                <div class="text-center w-full max-w-[280px] p-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                    <p class="text-xs text-gray-400 font-bold mb-1">CATCHPHRASE</p>
+                    <p class="text-sm text-gray-600 font-semibold italic">"언어는 미지의 우주를 도는 열쇠!"</p>
+                </div>
+            </div>
+
+            <!-- 오른쪽 파트: 31일 스탬프 그리드 보드 (image_e414b1.png 모티브) -->
+            <div class="w-full md:w-[60%] flex flex-col gap-6 overflow-y-auto pr-2 z-10">
+                <h3 class="text-2xl text-gray-700 border-b border-gray-200 pb-2 flex items-center justify-between">
+                    <span class="flex items-center gap-2">✨ <span>이번 달 영어 공부 스탬프 판</span></span>
+                    <button onclick="resetStamps()" class="text-xs bg-red-100 hover:bg-red-200 text-red-600 px-3 py-1 rounded-full transition-all">전체 초기화</button>
+                </h3>
+
+                <!-- image_e414b1.png 처럼 동그라미 무늬로 가득 채워진 그리드 공간 -->
+                <div class="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7 gap-3.5 p-5 bg-white rounded-3xl border border-gray-100 shadow-sm justify-items-center" id="stamp-grid-container">
+                    <!-- 자바스크립트로 1~31일 원형 스탬프 동적 생성 -->
+                </div>
+
+                <!-- 손글씨 데코레이션 텍스트 -->
+                <div class="mt-2 p-4 border-l-4 border-blue-400 bg-white rounded-r-2xl shadow-sm">
+                    <p class="handwritten-font text-blue-800">
+                        "오늘 하루도 영어와 즐겁게 친해졌다면, 해당 날짜의 동그라미를 콕 눌러 귀여운 삐약이 스탬프를 채워 보세요!"
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 조작 팁 표시 -->
+    
+
+    <!-- 모달 창 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">×</span>
+            <h2 class="modal-title" id="modalTitle">제목</h2>
+            <p class="modal-text" id="modalText">내용이 들어갑니다.</p>
+        </div>
+    </div>
+
+
+
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        renderStamps();
+    </script>
+
+</body>
+</html>

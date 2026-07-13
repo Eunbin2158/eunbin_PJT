@@ -1,0 +1,756 @@
+:root {
+            --mint-green: #a8e6cf;
+            --mint-light: #d4f0f0;
+            --pastel-pink: #ffd3b6;
+            --pastel-yellow: #fff176; /* 조금 더 화사한 병아리 옐로우 */
+            --pastel-orange: #ffb74d; /* 부리용 오렌지 */
+            --pastel-blue: #a1c4fd;
+            --wood-color: #dcb38a;
+            --text-color: #555555;
+            --bg-cozy: #fbf9f5; /* 따뜻한 미색 스크랩북 배경 */
+        }
+
+        body {
+            font-family: 'Jua', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #cbe6e6;
+            user-select: none;
+        }
+
+        /* 3D 캔버스 컨테이너 */
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 5;
+            transition: opacity 0.5s ease;
+        }
+
+        .signboard-container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 35; 
+            perspective: 1000px;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .signboard-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform-origin: top center;
+        }
+
+        .sign-ropes {
+            display: flex;
+            justify-content: space-between;
+            width: 160px;
+            height: 40px;
+        }
+        .rope {
+            width: 6px;
+            height: 100%;
+            background-color: #b88b5c;
+            border-radius: 3px;
+            position: relative;
+        }
+        .rope::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            background-color: #888;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .frame {
+            background-color: white;
+            padding: 12px 35px;
+            border: 8px solid #dcb38a;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1), inset 0 0 10px rgba(0,0,0,0.02);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            margin-top: -2px; 
+            pointer-events: auto;
+        }
+        .frame::before, .frame::after {
+            content: '';
+            position: absolute;
+            top: -12px;
+            width: 10px;
+            height: 10px;
+            background-color: #aaa;
+            border-radius: 50%;
+            border: 2px solid #dcb38a;
+        }
+        .frame::before { left: 35px; }
+        .frame::after { right: 35px; }
+
+        .frame:hover {
+            transform: scale(1.03);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+        .frame h1 {
+            color: #555;
+            font-size: 1.5rem;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+        .frame p {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        /* 3D 조작 안내 툴팁 */
+        .interaction-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #555;
+            pointer-events: none;
+            z-index: 30;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: opacity 0.5s ease;
+        }
+
+        .bgm-player {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 30;
+            color: #555;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .bgm-player:hover {
+            background-color: #a8e6cf;
+            color: white;
+        }
+        .music-notes {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            pointer-events: none;
+            display: none;
+        }
+        .note {
+            position: absolute;
+            font-size: 1.5rem;
+            color: #a8e6cf;
+            animation: float-up 2s linear infinite;
+            opacity: 0;
+        }
+        .note:nth-child(2) { animation-delay: 0.7s; left: 20px; }
+        .note:nth-child(3) { animation-delay: 1.4s; left: -20px; }
+        .bgm-playing .music-notes { display: block; }
+
+        .index-tabs {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 40;
+        }
+        .tab {
+            background-color: white;
+            padding: 15px 20px 15px 30px;
+            border-radius: 20px 0 0 20px;
+            box-shadow: -4px 4px 10px rgba(0,0,0,0.05);
+            font-size: 1.2rem;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            right: -10px; 
+        }
+        .tab:hover, .tab.active {
+            right: 0;
+            background-color: #a8e6cf;
+            color: white;
+            padding-left: 40px;
+        }
+        .tab.tab-pink:hover, .tab.tab-pink.active { background-color: #ffd3b6; color: #555;}
+        .tab.tab-yellow:hover, .tab.tab-yellow.active { background-color: #ffaaa5; color: #555;}
+        .tab.tab-blue:hover, .tab.tab-blue.active { background-color: #a1c4fd; color: white;}
+
+        #about-me-page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--mint-light);
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+        #about-me-page.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* 영어 습관 체크 전용 페이지 스타일 */
+        #english-page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #e3edff; /* 포근한 파스텔 블루 */
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+        #english-page.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* 다이어리 노트 본체 */
+        .diary-notebook {
+            background-color: var(--bg-cozy);
+            width: 100%;
+            max-width: 1000px;
+            height: auto;
+            min-height: 650px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1), inset 0 0 20px rgba(0,0,0,0.02);
+            border: 8px solid white;
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+            padding: 30px;
+            gap: 30px;
+        }
+
+        /* 다이어리 스프링 바이크 디테일 */
+        .diary-notebook::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 35%;
+            width: 4px;
+            background: rgba(0,0,0,0.05);
+            border-left: 1px dashed rgba(0,0,0,0.1);
+        }
+
+        /* 손글씨 느낌 테마 스타일 */
+        .handwritten-font {
+            font-family: 'Gamja Flower', cursive;
+            font-size: 1.4rem;
+            color: #444;
+            line-height: 1.5;
+        }
+
+        /* 귀여운 폴라로이드 사진 스타일 */
+        .polaroid-frame {
+            background-color: white;
+            padding: 15px 15px 35px 15px;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+            transform: rotate(-3deg);
+            transition: transform 0.3s;
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .polaroid-frame:hover {
+            transform: rotate(1deg) scale(1.05);
+        }
+
+        /* 다이어리 스티커/메모 스타일 */
+        .scrap-sticker {
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+            position: relative;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .scrap-sticker:hover {
+            transform: translateY(-4px) scale(1.02);
+        }
+        /* 메모 위에 덧붙인 마스킹 테이프 디테일 */
+        .scrap-sticker .masking-tape {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 80px;
+            height: 24px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-left: 2px dashed rgba(0,0,0,0.05);
+            border-right: 2px dashed rgba(0,0,0,0.05);
+        }
+
+        /* image_e414b1.png 디자인 기반 동글동글 원형 스탬프 스타일 */
+        .stamp-circle {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background-color: white;
+            position: relative;
+        }
+        .stamp-circle:hover {
+            border-color: #a1c4fd;
+            transform: scale(1.1);
+        }
+        .stamp-circle.stamped {
+            border-color: #ffd3b6;
+            background-color: #fffbeb;
+            font-size: 0; /* 투명도 상속 문제를 원천 차단하기 위해 폰트 크기를 0으로 축소하여 숫자를 숨깁니다. */
+            box-shadow: 0 4px 10px rgba(254, 240, 138, 0.4);
+        }
+        .stamp-circle.stamped::after {
+            content: '🐥'; /* 귀여운 삐약이 체크 스탬프 */
+            position: absolute;
+            font-size: 1.7rem; /* 이모지 스탬프의 크기를 확실하게 확보하여 복원합니다. */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            animation: stamp-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes stamp-pop {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* 모달 창 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 30px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateY(20px);
+            transition: transform 0.3s;
+            position: relative;
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #aaa;
+        }
+        .modal-close:hover { color: #555; }
+        .modal-title {
+            font-size: 1.8rem;
+            color: #a8e6cf;
+            margin-bottom: 15px;
+        }
+        .modal-text {
+            font-size: 1.2rem;
+            color: #555;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(0) scale(0.8); opacity: 1; }
+            100% { transform: translateY(-40px) scale(1.2); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .index-tabs { transform: translateY(-50%) scale(0.8); right: -20px; }
+            .sign-ropes { width: 120px; height: 30px; }
+            .frame { padding: 10px 25px; }
+            .frame h1 { font-size: 1.2rem; }
+            .frame p { font-size: 0.8rem; }
+            #about-me-page { padding: 15px; }
+            .diary-notebook {
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+                overflow-y: auto;
+                height: 90vh;
+            }
+            .diary-notebook::before { display: none; }
+        }
+        /* Portfolio 페이지 */
+        #portfolio-page {
+            position: absolute;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            padding: 28px 120px 28px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background:#dff2ec;
+            z-index: 10;
+        }
+
+        .portfolio-notebook {
+            position: relative;
+            width: min(1120px, 100%);
+            height: min(700px, calc(100vh - 56px));
+            min-height: 590px;
+            padding: 24px 28px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow: hidden;
+            border: 8px solid white;
+            border-radius: 30px;
+            background-color: var(--bg-cozy);
+            box-shadow: 0 15px 35px rgba(75, 103, 96, 0.14), inset 0 0 20px rgba(0, 0, 0, 0.02);
+        }
+
+        .portfolio-notebook::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 18px;
+            width: 120px;
+            height: 26px;
+            transform: rotate(-4deg);
+            background-color: rgba(168, 230, 207, 0.42);
+            border-left: 2px dashed rgba(60, 125, 108, 0.12);
+            border-right: 2px dashed rgba(60, 125, 108, 0.12);
+        }
+
+        .portfolio-header {
+            position: relative;
+            z-index: 1;
+            min-height: 82px;
+            padding: 4px 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px dashed #d7ddd9;
+        }
+
+        .portfolio-label {
+            display: inline-block;
+            padding: 4px 12px;
+            border: 1px solid #b9e3d5;
+            border-radius: 999px;
+            background-color: #e9f8f3;
+            color: #4f8f7d;
+            font-size: 0.78rem;
+        }
+
+        .portfolio-header h1 {
+            margin: 7px 0 1px;
+            color: #4d5c58;
+            font-size: clamp(1.7rem, 2.4vw, 2.25rem);
+            line-height: 1.1;
+        }
+
+        .portfolio-header p {
+            margin: 0;
+            color: #7a8783;
+            font-size: 0.96rem;
+        }
+
+        .portfolio-doodle {
+            margin-right: 10px;
+            font-size: 3.2rem;
+            transform: rotate(8deg);
+            filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.08));
+        }
+
+        .portfolio-grid {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .project-card {
+            position: relative;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 22px;
+            background-color: white;
+            box-shadow: 0 8px 20px rgba(78, 96, 91, 0.09);
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px) rotate(-0.3deg);
+            box-shadow: 0 14px 26px rgba(78, 96, 91, 0.15);
+        }
+
+        .project-card:nth-child(2):hover {
+            transform: translateY(-6px) rotate(0.3deg);
+        }
+
+        .project-tape {
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            z-index: 3;
+            width: 72px;
+            height: 22px;
+            transform: translateX(-50%) rotate(-2deg);
+            background-color: rgba(255, 255, 255, 0.75);
+            border-left: 2px dashed rgba(0, 0, 0, 0.05);
+            border-right: 2px dashed rgba(0, 0, 0, 0.05);
+        }
+
+        .project-mint .project-tape { background-color: rgba(204, 251, 241, 0.78); }
+        .project-lavender .project-tape { background-color: rgba(233, 213, 255, 0.78); }
+        .project-pink .project-tape { background-color: rgba(255, 211, 182, 0.76); }
+
+        .project-image-wrap {
+            height: clamp(145px, 24vh, 205px);
+            min-height: 140px;
+            overflow: hidden;
+            background-color: #f4efff;
+        }
+
+        .project-image-light { background-color: #ffffff; }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .project-image-cover { object-fit: cover; }
+        .project-image-contain { object-fit: contain; }
+
+        .project-content {
+            flex: 1;
+            min-height: 0;
+            padding: 14px 16px 13px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-title-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .project-number {
+            flex: 0 0 auto;
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: #e8f7f2;
+            color: #4f8f7d;
+            font-size: 0.75rem;
+        }
+
+        .project-lavender .project-number {
+            background-color: #f1e8ff;
+            color: #8655ba;
+        }
+
+        .project-pink .project-number {
+            background-color: #fff0e8;
+            color: #c77655;
+        }
+
+        .project-title-row h2 {
+            min-width: 0;
+            margin: 0;
+            color: #4c5552;
+            font-size: clamp(1.05rem, 1.45vw, 1.35rem);
+            line-height: 1.2;
+            word-break: keep-all;
+        }
+
+        .project-summary {
+            min-height: 40px;
+            margin: 9px 0 10px;
+            color: #69736f;
+            font-size: 0.9rem;
+            line-height: 1.45;
+            word-break: keep-all;
+        }
+
+        .project-role {
+            padding: 9px 10px;
+            border-radius: 13px;
+            background-color: #f1faf7;
+        }
+
+        .project-lavender .project-role { background-color: #f7f2ff; }
+        .project-pink .project-role { background-color: #fff6f1; }
+
+        .project-role span {
+            display: block;
+            margin-bottom: 3px;
+            color: #4f8f7d;
+            font-size: 0.72rem;
+        }
+
+        .project-lavender .project-role span { color: #8655ba; }
+        .project-pink .project-role span { color: #c77655; }
+
+        .project-role p {
+            margin: 0;
+            color: #59635f;
+            font-size: 0.82rem;
+            line-height: 1.4;
+            word-break: keep-all;
+        }
+
+        .project-tags {
+            margin-top: auto;
+            padding-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .project-tags span {
+            padding: 4px 8px;
+            border: 1px solid #dce8e4;
+            border-radius: 999px;
+            background-color: white;
+            color: #7c8884;
+            font-family: 'Jua', sans-serif;
+            font-size: 0.68rem;
+        }
+
+        .portfolio-note {
+            position: relative;
+            z-index: 1;
+            margin: -2px 0 0;
+            text-align: right;
+            color: #4f8f7d;
+            font-size: 1.18rem;
+        }
+
+        @media (max-width: 1050px) {
+            #portfolio-page {
+                padding-right: 95px;
+                padding-left: 22px;
+            }
+
+            .portfolio-notebook {
+                padding-right: 20px;
+                padding-left: 20px;
+            }
+
+            .project-content {
+                padding-right: 12px;
+                padding-left: 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #portfolio-page {
+                align-items: flex-start;
+                padding: 18px 64px 18px 14px;
+                overflow-y: auto;
+            }
+
+            .portfolio-notebook {
+                height: auto;
+                min-height: calc(100vh - 36px);
+                overflow: visible;
+            }
+
+            .portfolio-header p,
+            .portfolio-doodle,
+            .portfolio-note {
+                display: none;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-image-wrap {
+                height: 190px;
+            }
+        }
+
