@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miniature | 호기심 많은 은빈의 방</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Jua&display=swap" rel="stylesheet">
+
+    <!-- main.js가 모든 페이지에서 THREE 객체를 참조하므로 함께 불러옵니다. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- 공통 BGM 버튼 -->
+    <div class="bgm-player" id="bgmToggle">
+        🎵 <span id="bgmText">BGM OFF</span>
+        <div class="music-notes">
+            <span class="note">♪</span>
+            <span class="note">♫</span>
+            <span class="note">♪</span>
+        </div>
+    </div>
+
+    <!-- 공통 우측 인덱스 메뉴 -->
+    <nav class="index-tabs">
+        <div class="tab" id="tab-home" onclick="switchPage('home')">Home</div>
+        <div class="tab tab-pink" id="tab-aboutme" onclick="switchPage('aboutme')">About Me</div>
+        <div class="tab tab-blue" id="tab-portfolio" onclick="switchPage('portfolio')">Portfolio</div>
+        <div class="tab tab-yellow active" id="tab-miniature" onclick="switchPage('miniature')">Miniature</div>
+        <div class="tab" id="tab-english" onclick="switchPage('english')">English</div>
+    </nav>
+
+    <!-- 미니어처 페이지 -->
+    <main id="miniature-page">
+        <section class="miniature-notebook">
+            <header class="miniature-header">
+                <div>
+                    <span class="miniature-label">#MY_MINIATURES</span>
+                    <h1>손끝으로 만든 작은 세계 🧸</h1>
+                    <p>조립하고 꾸미며 완성한, 제가 좋아하는 미니어처 기록이에요.</p>
+                </div>
+                <span class="miniature-header-icon" aria-hidden="true">✨</span>
+            </header>
+
+            <div class="miniature-grid">
+                <article
+                    class="miniature-card miniature-card-yellow"
+                    onclick="showModal('겨울 놀이공원 오르골', '눈 내린 산과 관람차, 회전목마를 유리 돔 안에 담은 오르골이에요. 작은 부품과 조명을 하나씩 조립해 완성했습니다.')"
+                >
+                    <div class="miniature-tape"></div>
+                    <div class="miniature-image-wrap miniature-image-contain-bg">
+                        <img
+                            src="assets/images/winter-amusement-music-box.jpg"
+                            alt="직접 만든 겨울 놀이공원 오르골 미니어처"
+                            class="miniature-image miniature-image-contain"
+                        >
+                    </div>
+                    <div class="miniature-content">
+                        <span class="miniature-number">01</span>
+                        <h2>겨울 놀이공원 오르골</h2>
+                        <p>관람차와 회전목마, 작은 불빛을 유리 돔 안에 담았어요.</p>
+                        <span class="miniature-point">조립 · 장식 · 조명</span>
+                    </div>
+                </article>
+
+                <article
+                    class="miniature-card miniature-card-wood"
+                    onclick="showModal('기어 첼로 오르골', '여러 나무 부품과 기어가 맞물려 움직이는 첼로 형태의 오르골이에요. 부품을 순서대로 맞추고 실제 동작까지 확인하며 완성했습니다.')"
+                >
+                    <div class="miniature-tape"></div>
+                    <div class="miniature-image-wrap">
+                        <img
+                            src="assets/images/gear-cello-music-box.jpg"
+                            alt="직접 조립한 나무 기어 첼로 오르골"
+                            class="miniature-image miniature-image-cover"
+                        >
+                    </div>
+                    <div class="miniature-content">
+                        <span class="miniature-number">02</span>
+                        <h2>기어 첼로 오르골</h2>
+                        <p>나무 기어가 맞물려 움직이는 첼로를 직접 조립했어요.</p>
+                        <span class="miniature-point">우드 퍼즐 · 기어 · 동작 조립</span>
+                    </div>
+                </article>
+
+                <article
+                    class="miniature-card miniature-card-pink"
+                    onclick="showModal('포근한 침실 미니어처', '침대와 수납장, 조명과 작은 생활 소품을 배치해 만든 미니어처 방이에요. 따뜻하고 아기자기한 분위기가 느껴지도록 공간을 꾸몄습니다.')"
+                >
+                    <div class="miniature-tape"></div>
+                    <div class="miniature-image-wrap">
+                        <img
+                            src="assets/images/cozy-bedroom-miniature.jpg"
+                            alt="직접 만든 포근한 침실 미니어처"
+                            class="miniature-image miniature-image-cover"
+                        >
+                    </div>
+                    <div class="miniature-content">
+                        <span class="miniature-number">03</span>
+                        <h2>포근한 침실 미니어처</h2>
+                        <p>침대와 조명, 작은 소품으로 아늑한 방을 꾸몄어요.</p>
+                        <span class="miniature-point">공간 구성 · 조명 · 소품 배치</span>
+                    </div>
+                </article>
+            </div>
+
+            <p class="miniature-note handwritten-font">
+                “작은 조각들이 하나의 세계가 되는 순간을 좋아해요.”
+            </p>
+        </section>
+    </main>
+
+    <!-- 공통 모달 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">×</span>
+            <h2 class="modal-title" id="modalTitle">제목</h2>
+            <p class="modal-text" id="modalText">내용이 들어갑니다.</p>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

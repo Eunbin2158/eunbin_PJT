@@ -493,6 +493,7 @@ let scene, camera, renderer, controls;
                     home: 'index.html',
                     aboutme: 'about.html',
                     portfolio: 'portfolio.html',
+                    miniature: 'miniature.html',
                     english: 'english.html'
                 };
                 const destination = pageMap[pageName];
